@@ -60,7 +60,7 @@ const Footer = styled.div`
   justify-content: space-evenly;
 `;
 
-const MemoAdd = ({ visible, onCancelClick }) => {
+const MemoAdd = ({ visible, onCancelClick, memos }) => {
   if (!visible) return null;
   const onButtonClick = () => {
     onCancelClick();

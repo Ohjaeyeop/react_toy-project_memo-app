@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MdAdd, MdSearch } from 'react-icons/md';
 import MemoAdd from './MemoAdd';
+import MemoList from './MemoList';
 
 const MemoTemplateBlock = styled.div`
   width: 512px;
@@ -47,7 +48,7 @@ const MemoSubWrapper = styled.div`
   }
 `;
 
-const MemoTemplate = () => {
+const MemoTemplate = ({ memos }) => {
   const [modal, setModal] = useState(false);
   const onAddClick = () => {
     setModal(true);
@@ -67,8 +68,8 @@ const MemoTemplate = () => {
           <MdAdd />
         </button>
       </MemoSubWrapper>
-      <MemoAdd visible={modal} onCancelClick={onCancelClick} />
-      <h3>MemoList</h3>
+      <MemoAdd visible={modal} onCancelClick={onCancelClick} memos={memos} />
+      <MemoList memos={memos} />
     </MemoTemplateBlock>
   );
 };
