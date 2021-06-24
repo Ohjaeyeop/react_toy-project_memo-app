@@ -52,6 +52,9 @@ const MemoTemplate = () => {
   const onAddClick = () => {
     setModal(true);
   };
+  const onCancelClick = () => {
+    setModal(false);
+  };
   return (
     <MemoTemplateBlock>
       <MemoTitleWrapper>
@@ -64,7 +67,7 @@ const MemoTemplate = () => {
           <MdAdd />
         </button>
       </MemoSubWrapper>
-      <MemoAdd visible={modal} />
+      <MemoAdd visible={modal} onCancelClick={onCancelClick} />
       <h3>MemoList</h3>
     </MemoTemplateBlock>
   );
