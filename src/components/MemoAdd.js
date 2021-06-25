@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Button from './common/Button';
 
@@ -66,6 +66,13 @@ const MemoAdd = ({ visible, onCancelClick, onAdd }) => {
     who: '',
     where: '',
   });
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [visible]);
 
   const onChange = useCallback(
     (e) => {
@@ -91,6 +98,11 @@ const MemoAdd = ({ visible, onCancelClick, onAdd }) => {
   if (!visible) return null;
 
   const onButtonClick = () => {
+    setText({
+      contents: '',
+      who: '',
+      where: '',
+    });
     onCancelClick();
   };
   return (
@@ -106,6 +118,7 @@ const MemoAdd = ({ visible, onCancelClick, onAdd }) => {
               id="contents"
               value={text.contents}
               onChange={onChange}
+              ref={inputRef}
               required
             />
           </InputWrapper>

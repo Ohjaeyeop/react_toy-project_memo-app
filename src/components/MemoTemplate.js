@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { MdAdd, MdSearch } from 'react-icons/md';
 import MemoAdd from './MemoAdd';
 import MemoList from './MemoList';
+import Button from './common/Button';
 
 const MemoTemplateBlock = styled.div`
   width: 512px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 6rem;
+  margin-top: 4rem;
 `;
 
 const MemoTitleWrapper = styled.div`
@@ -48,14 +49,45 @@ const MemoSubWrapper = styled.div`
   }
 `;
 
+const Paginator = styled.div`
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  Button {
+    :first-child {
+      margin-right: 0.75rem;
+    }
+    :last-child {
+      margin-left: 0.75rem;
+    }
+  }
+`;
+
+const StyledPage = styled.span`
+  cursor: pointer;
+  & + & {
+    margin-left: 0.5rem;
+  }
+  color: ${(props) => (props.active ? 'coral' : 'gray')};
+`;
+
 const MemoTemplate = ({ memos, onAdd, onRemove }) => {
   const [modal, setModal] = useState(false);
+  const [currentPage, setcurrentPage] = useState(1);
+
   const onAddClick = () => {
     setModal(true);
   };
   const onCancelClick = () => {
     setModal(false);
   };
+
+  const pages = [];
+  for (let i = 1; i <= Math.ceil(memos.length / 4); i++) {
+    pages.push(i);
+  }
   return (
     <MemoTemplateBlock>
       <MemoTitleWrapper>
@@ -69,7 +101,36 @@ const MemoTemplate = ({ memos, onAdd, onRemove }) => {
         </button>
       </MemoSubWrapper>
       <MemoAdd visible={modal} onCancelClick={onCancelClick} onAdd={onAdd} />
-      <MemoList memos={memos} onRemove={onRemove} />
+      <MemoList
+        memos={memos.slice((currentPage - 1) * 4, currentPage * 4)}
+        onRemove={onRemove}
+      />
+      <Paginator>
+        <Button
+          onClick={() =>
+            setcurrentPage(currentPage > 1 ? currentPage - 1 : currentPage)
+          }
+        >
+          이전
+        </Button>
+        {pages.map((page) => (
+          <StyledPage
+            active={page === currentPage}
+            onClick={() => setcurrentPage(page)}
+          >
+            [{page}]
+          </StyledPage>
+        ))}
+        <Button
+          onClick={() =>
+            setcurrentPage(
+              currentPage < pages.length ? currentPage + 1 : currentPage,
+            )
+          }
+        >
+          다음
+        </Button>
+      </Paginator>
     </MemoTemplateBlock>
   );
 };
