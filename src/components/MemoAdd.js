@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Button from './common/Button';
 
@@ -60,8 +60,36 @@ const Footer = styled.div`
   justify-content: space-evenly;
 `;
 
-const MemoAdd = ({ visible, onCancelClick, memos }) => {
+const MemoAdd = ({ visible, onCancelClick, onAdd }) => {
+  const [text, setText] = useState({
+    contents: '',
+    who: '',
+    where: '',
+  });
+
+  const onChange = useCallback(
+    (e) => {
+      setText({ ...text, [e.target.name]: e.target.value });
+    },
+    [text],
+  );
+
+  const onSubmit = useCallback(
+    (e) => {
+      onAdd(text);
+      setText({
+        contents: '',
+        who: '',
+        where: '',
+      });
+      e.preventDefault();
+      onCancelClick();
+    },
+    [onAdd, text, onCancelClick],
+  );
+
   if (!visible) return null;
+
   const onButtonClick = () => {
     onCancelClick();
   };
@@ -69,29 +97,43 @@ const MemoAdd = ({ visible, onCancelClick, memos }) => {
     <Fullscreen>
       <MemoAddBlock>
         <h3>메모 작성하기</h3>
-        <form>
+        <form onSubmit={onSubmit}>
           <InputWrapper>
             <StyledLabel for="contents">Contents</StyledLabel>
             <StyledInput
               name="contents"
               placeholder="명언, 명대사, 좋은 구절 등"
               id="contents"
+              value={text.contents}
+              onChange={onChange}
               required
             />
           </InputWrapper>
           <InputWrapper>
             <StyledLabel for="person">Who?</StyledLabel>
-            <StyledInput name="who" placeholder="인물" id="who" />
+            <StyledInput
+              name="who"
+              placeholder="인물"
+              id="who"
+              value={text.who}
+              onChange={onChange}
+            />
           </InputWrapper>
           <InputWrapper>
             <StyledLabel for="where">Where?</StyledLabel>
-            <StyledInput name="where" placeholder="책, 영화 등" id="where" />
+            <StyledInput
+              name="where"
+              placeholder="책, 영화 등"
+              id="where"
+              value={text.where}
+              onChange={onChange}
+            />
           </InputWrapper>
+          <Footer>
+            <Button type="submit">추가</Button>
+            <Button onClick={onButtonClick}>취소</Button>
+          </Footer>
         </form>
-        <Footer>
-          <Button onClick={onButtonClick}>추가</Button>
-          <Button onClick={onButtonClick}>취소</Button>
-        </Footer>
       </MemoAddBlock>
     </Fullscreen>
   );

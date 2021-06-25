@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import MemoTemplate from './components/MemoTemplate';
 
 const App = () => {
@@ -27,7 +27,21 @@ const App = () => {
       where: '설국',
     },
   ]);
-  return <MemoTemplate memos={memos} />;
+  const nextId = useRef(5);
+  const onAdd = useCallback(
+    (value) => {
+      const memo = {
+        id: nextId.current,
+        contents: value.contents,
+        who: value.who,
+        where: value.where,
+      };
+      setMemos(memos.concat(memo));
+      nextId.current += 1;
+    },
+    [memos],
+  );
+  return <MemoTemplate onAdd={onAdd} memos={memos} />;
 };
 
 export default App;

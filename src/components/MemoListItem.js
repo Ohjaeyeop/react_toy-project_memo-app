@@ -5,10 +5,28 @@ import { ImQuotesLeft, ImQuotesRight } from 'react-icons/im';
 const MemoListItemBlock = styled.div`
   background-color: SeaShell;
   padding: 1.125rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
   border-radius: 10px;
   color: DimGray;
   & + & {
     margin-top: 2.25rem;
+  }
+`;
+
+const RemoveWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  left: 17px;
+  top: -4px;
+  button {
+    outline: none;
+    border: none;
+    background-color: SeaShell;
+    color: coral;
+    font-size: 0.5rem;
+    cursor: pointer;
   }
 `;
 
@@ -31,15 +49,20 @@ const StyledSpan = styled.span`
 const MemoListItem = ({ memo }) => {
   return (
     <MemoListItemBlock>
-      <QuoteSpan>
-        <ImQuotesLeft />
-      </QuoteSpan>
-      <StyledSpan>{memo.contents}</StyledSpan>
-      <QuoteSpan>
-        <ImQuotesRight />
-      </QuoteSpan>
-      {memo.who && <StyledSpan>- {memo.who}</StyledSpan>}
-      {memo.where && <StyledSpan>, {memo.where} 중에서</StyledSpan>}
+      <RemoveWrapper>
+        <button>X</button>
+      </RemoveWrapper>
+      <div>
+        <QuoteSpan>
+          <ImQuotesLeft />
+        </QuoteSpan>
+        <StyledSpan>{memo.contents}</StyledSpan>
+        <QuoteSpan>
+          <ImQuotesRight />
+        </QuoteSpan>
+        {memo.who && <StyledSpan> - {memo.who}</StyledSpan>}
+        {memo.where && <StyledSpan> ,&lt; {memo.where} &gt; 중에서</StyledSpan>}
+      </div>
     </MemoListItemBlock>
   );
 };
