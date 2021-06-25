@@ -46,11 +46,13 @@ const StyledSpan = styled.span`
   line-height: 1.75rem;
 `;
 
-const MemoListItem = ({ memo }) => {
+const MemoListItem = ({ memo, onRemove }) => {
+  const onClick = () => onRemove(memo.id);
+
   return (
     <MemoListItemBlock>
       <RemoveWrapper>
-        <button>X</button>
+        <button onClick={onClick}>X</button>
       </RemoveWrapper>
       <div>
         <QuoteSpan>

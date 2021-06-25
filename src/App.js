@@ -41,7 +41,13 @@ const App = () => {
     },
     [memos],
   );
-  return <MemoTemplate onAdd={onAdd} memos={memos} />;
+  const onRemove = useCallback(
+    (id) => {
+      setMemos(memos.filter((memo) => memo.id !== id));
+    },
+    [memos],
+  );
+  return <MemoTemplate onAdd={onAdd} onRemove={onRemove} memos={memos} />;
 };
 
 export default App;

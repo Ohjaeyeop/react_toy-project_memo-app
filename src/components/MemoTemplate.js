@@ -48,7 +48,7 @@ const MemoSubWrapper = styled.div`
   }
 `;
 
-const MemoTemplate = ({ memos, onAdd }) => {
+const MemoTemplate = ({ memos, onAdd, onRemove }) => {
   const [modal, setModal] = useState(false);
   const onAddClick = () => {
     setModal(true);
@@ -69,7 +69,7 @@ const MemoTemplate = ({ memos, onAdd }) => {
         </button>
       </MemoSubWrapper>
       <MemoAdd visible={modal} onCancelClick={onCancelClick} onAdd={onAdd} />
-      <MemoList memos={memos} />
+      <MemoList memos={memos} onRemove={onRemove} />
     </MemoTemplateBlock>
   );
 };

@@ -6,11 +6,11 @@ const MemoListBlock = styled.div`
   margin-top: 2.5rem;
 `;
 
-const MemoList = ({ memos }) => {
+const MemoList = ({ memos, onRemove }) => {
   return (
     <MemoListBlock>
       {memos.map((memo) => (
-        <MemoListItem memo={memo} key={memo.id} />
+        <MemoListItem memo={memo} onRemove={onRemove} key={memo.id} />
       ))}
     </MemoListBlock>
   );
