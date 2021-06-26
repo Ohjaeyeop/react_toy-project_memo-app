@@ -36,7 +36,8 @@ const App = () => {
         who: value.who,
         where: value.where,
       };
-      setMemos(memos.concat(memo));
+      console.log(memo);
+      setMemos([memo, ...memos]);
       nextId.current += 1;
     },
     [memos],

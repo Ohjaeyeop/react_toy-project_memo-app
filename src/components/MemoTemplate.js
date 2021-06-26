@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MdAdd, MdSearch } from 'react-icons/md';
 import MemoAdd from './MemoAdd';
@@ -76,6 +76,8 @@ const StyledPage = styled.span`
 const MemoTemplate = ({ memos, onAdd, onRemove }) => {
   const [modal, setModal] = useState(false);
   const [currentPage, setcurrentPage] = useState(1);
+  const [search, setSearch] = useState('');
+  const [filteredMemos, setFilteredMemos] = useState(memos);
 
   const onAddClick = () => {
     setModal(true);
@@ -84,8 +86,27 @@ const MemoTemplate = ({ memos, onAdd, onRemove }) => {
     setModal(false);
   };
 
+  const onChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    setFilteredMemos(memos);
+  }, [memos]);
+
+  useEffect(() => {
+    setFilteredMemos(
+      memos.filter(
+        (memo) =>
+          memo.contents.includes(search) ||
+          (memo.who && memo.who.includes(search)) ||
+          (memo.where && memo.where.includes(search)),
+      ),
+    );
+  }, [search, memos]);
+
   const pages = [];
-  for (let i = 1; i <= Math.ceil(memos.length / 4); i++) {
+  for (let i = 1; i <= Math.ceil(filteredMemos.length / 4); i++) {
     pages.push(i);
   }
   return (
@@ -95,14 +116,14 @@ const MemoTemplate = ({ memos, onAdd, onRemove }) => {
       </MemoTitleWrapper>
       <MemoSubWrapper>
         <MdSearch />
-        <input placeholder="작품, 인물 등" />
+        <input placeholder="작품, 인물 등" value={search} onChange={onChange} />
         <button onClick={onAddClick}>
           <MdAdd />
         </button>
       </MemoSubWrapper>
       <MemoAdd visible={modal} onCancelClick={onCancelClick} onAdd={onAdd} />
       <MemoList
-        memos={memos.slice((currentPage - 1) * 4, currentPage * 4)}
+        memos={filteredMemos.slice((currentPage - 1) * 4, currentPage * 4)}
         onRemove={onRemove}
       />
       <Paginator>
