@@ -4,4 +4,5 @@
 
 # Technique Used
 
-React.js, styled-components
+- React.js
+- styled-components
